@@ -8,10 +8,7 @@ Vulnerable programs are adapted from **juliet-test-suite-c**: https://github.com
 - The adapter publishes effects into a shared state. The shared state is deterministic “glue”, later steps can observe what earlier steps produced.
 
 Shared state:
-- Regions:
-  - `region_id` (opaque handle)  
-  - `segment`: `HEAP | STACK | DATA | CODE | PROTECTED`  
-  - `alive`: `1/0` (lifetime; supports leak/free/UAF reasoning)
+- Segment: `HEAP | STACK | DATA | CODE | PROTECTED`  
 - Effects: what the step did to a region  
   - `(region_id, offset, size, action=READ/WRITE/EXEC/CALL)`
 - Addesss: fixed, arbitary, expandable
