@@ -9,7 +9,6 @@ Vulnerable programs are adapted from **juliet-test-suite-c**: https://github.com
 
 Shared state:
 - Segment: `HEAP | STACK | DATA | CODE | PROTECTED`  
-- Effects: what the step did to a region  
-  - `(region_id, offset, size, action=READ/WRITE/EXEC/CALL)`
+- Effects: READ/WRITE/EXEC/CALL
 - Addesss: fixed, arbitary, expandable
 
