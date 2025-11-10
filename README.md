@@ -7,8 +7,6 @@ Vulnerable programs are adapted from **juliet-test-suite-c**: https://github.com
 - An adapter that feeds inputs exactly as expected (ENV / STDIN / FILE).
 - The adapter publishes effects into a shared state. The shared state is deterministic “glue”, later steps can observe what earlier steps produced.
 
-Effect model (one per step): `READ` · `WRITE` · `TRIGGER` · `EXEC`
-
 Shared state:
 - Regions:
   - `region_id` (opaque handle)  
