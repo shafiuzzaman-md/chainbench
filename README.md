@@ -12,8 +12,8 @@ Shared state:
 - Effects: `READ | WRITE | EXEC | CALL | TRIGGER`
 - Addesss: `fixed | arbitrary | expandable`
 
-**Generated outputs**
-Each selected Juliet testcase becomes a self-contained item bundle:
+**Generated outputs:**
+Each selected Juliet testcase becomes a self-contained item bundle.
 ```
 export/items/<STEM>/
 ├── source.c         # Juliet testcase (<stem>_bad / <stem>_good)
