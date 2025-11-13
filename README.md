@@ -37,7 +37,6 @@ pip install pyyaml
 Get Juliet
 ```
 git clone --depth 1 https://github.com/arichardson/juliet-test-suite-c.git external/juliet-test-suite-c
-
 ```
 
 Generate vulnerable files (apply adapters)
