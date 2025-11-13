@@ -49,6 +49,8 @@ python3 tools/cbgen.py \
 
 ## How to test
 
+### Independent vulnerabilities
+
 List available vulnerabilities
 ```
 ls export/items
@@ -66,7 +68,7 @@ printf "12\n" > export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01
 ./export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01/app
 
 ```
-
+### Chains
 Generate a chain from scenario.yaml:
 ```
 python3 tools/cbgen.py \
