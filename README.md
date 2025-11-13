@@ -19,8 +19,7 @@ export/items/<STEM>/
 ├── source.c         # Juliet testcase (<stem>_bad / <stem>_good)
 ├── adapter.c        # shared-state glue + input seeding
 ├── main_single.c    # entry for single run
-├── Makefile         # builds ./app
-└── meta.yaml        # effect/segment metadata
+└── Makefile        
 ```
 
 Typical call flow:
