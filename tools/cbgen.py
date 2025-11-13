@@ -100,7 +100,6 @@ INCLUDE += -include ../../include/cb_interpose.h
 SUPPORT_SRCS = $(wildcard ../../support/*.c)
 SRCS = main_single.c source.c ../../src/state.c ../../src/cb_io.c adapter.c $(SUPPORT_SRCS)
 
-
 all: app
 
 app: $(SRCS)
@@ -112,27 +111,41 @@ clean:
 
 
 
-SCEN_MAIN_TMPL = r'''#include <stdio.h>
+
+SCEN_MAIN_TMPL = Template(r'''#include <stdio.h>
 #include "state.h"
-{decls}
+$decls
 int main(void){
   cb_reset();
-{calls}
+$calls
   printf("[CB] scenario_done effects=%u regions=%u payload_len=%u\n",
          CB.effect_count, CB.region_count, CB.plane_len);
   return 0;
 }
-'''
+''')
 
 SCEN_MK = r'''CC ?= cc
 CFLAGS ?= -O2 -g -std=c11 -Wall -Wextra
-INCLUDE = -I ../../src -I ../../include
-SRCS = main.c ../../src/state.c {parts}
+# POSIX prototypes for fileno(), etc.
+CFLAGS += -D_POSIX_C_SOURCE=200809L
+
+INCLUDE = -I ../../include -I ../../src
+INCLUDE += -include ../../include/cb_interpose.h
+
+SUPPORT_SRCS = $(wildcard ../../support/*.c)
+SRCS = main.c ../../src/state.c ../../src/cb_io.c $(SUPPORT_SRCS) {parts}
+
 all: scenario
+
+scenario:
 	$(CC) $(CFLAGS) $(INCLUDE) $(SRCS) -o scenario
+
 clean:
 	rm -f scenario
 '''
+
+
+
 def copy_support_assets(juliet_root: Path):
     """Copy all available Juliet testcasesupport headers and C files."""
     inc = EXPO / "include"; inc.mkdir(parents=True, exist_ok=True)
@@ -230,21 +243,27 @@ def gen_scenario(items_dir: Path, scen_yaml: Path, scen_root: Path):
   d = scen_root / name
   d.mkdir(parents=True, exist_ok=True)
 
-  # compose main + Makefile
+  # compose declarations and calls
   decls = "\n".join([f"int chainbench_run_{s}_bad(void);" for s in stems])
   calls = "\n".join([f"  (void)chainbench_run_{s}_bad();" for s in stems])
-  (d / "main.c").write_text(SCEN_MAIN_TMPL.format(decls=decls, calls=calls))
-  parts = " ".join([f"../items/{s}/source.c ../items/{s}/adapter.c" for s in stems])
+
+  # write main.c
+  (d / "main.c").write_text(SCEN_MAIN_TMPL.substitute(decls=decls, calls=calls))
+
+  # parts: all item sources and adapters
+  parts = " ".join([f"../../items/{s}/source.c ../../items/{s}/adapter.c" for s in stems])
   (d / "Makefile").write_text(SCEN_MK.format(parts=parts))
 
-  # convenience: copy each item as a single-project under scenarios/<name>/single/<stem>
-  single = d / "single"; single.mkdir(exist_ok=True)
+
+  # copy single bundles for convenience
+  single = d / "single"
+  single.mkdir(exist_ok=True)
   for s in stems:
-    dst = single / s; dst.mkdir(exist_ok=True)
+    dst = single / s
+    dst.mkdir(exist_ok=True)
     for f in ["source.c","adapter.c","main_single.c","Makefile","meta.yaml"]:
       shutil.copy2(items_dir / s / f, dst / f)
 
-  # README
   (d / "README.md").write_text(
     f"# Scenario: {name}\n\nBuild chain:\n\n"
     "```bash\nmake -C .\n./scenario\n```\n\n"
@@ -259,7 +278,7 @@ def main():
   ap.add_argument("--selected", required=True, help="manifests/selected.yaml")
   ap.add_argument("--scenario", default=None, help="manifests/scenario.yaml (optional)")
   args = ap.parse_args()
-  
+
   copy_runtime(EXPO, ROOT)
   jroot = Path(args.juliet_root).resolve()
   selected = yaml.safe_load(Path(args.selected).read_text())

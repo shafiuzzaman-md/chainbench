@@ -9,7 +9,6 @@ INCLUDE += -include ../../include/cb_interpose.h
 SUPPORT_SRCS = $(wildcard ../../support/*.c)
 SRCS = main_single.c source.c ../../src/state.c ../../src/cb_io.c adapter.c $(SUPPORT_SRCS)
 
-
 all: app
 
 app: $(SRCS)
