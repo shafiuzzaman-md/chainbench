@@ -67,9 +67,7 @@ printf "12\n" > export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01
 
 ```
 
-Build a chain (scenario):
-
-Generate from scenario.yaml:
+Generate a chain from scenario.yaml:
 ```
 python3 tools/cbgen.py \
   --juliet-root external/juliet-test-suite-c \
@@ -81,7 +79,6 @@ Build & run the chain:
 ```
 make -C export/scenarios/demo-chain
 ./export/scenarios/demo-chain/scenario
-
 ```
 
 
