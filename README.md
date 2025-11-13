@@ -15,38 +15,38 @@ Shared state:
 
 
 ## How to use
-- Setup
+Setup
 ```
 python3 -m venv .venv && source .venv/bin/activate
 pip install pyyaml
 ```
 
-- Prepare Juliet
+Prepare Juliet
 ```
 git clone --depth 1 https://github.com/arichardson/juliet-test-suite-c.git external/juliet-test-suite-c
 
 ```
 
-- Generate vulnerable files (apply adapters)
+Generate vulnerable files (apply adapters)
 ```
 python3 tools/cbgen.py \
   --juliet-root external/juliet-test-suite-c \
   --selected manifests/selected.yaml
 ```
 
-- List available vulnerabilities
+List available vulnerabilities
 ```
 ls export/items
 ```
 
-- Run individual vulerabilities
+Run individual vulerabilities
 ```
 make -C export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01
 
 ./export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01/app < inputs/num_12.txt
 ```
 
-- Generate a chain from scenario.yaml
+Generate a chain from scenario.yaml
 ```
 python3 tools/cbgen.py \
   --juliet-root external/juliet-test-suite-c \
@@ -54,7 +54,7 @@ python3 tools/cbgen.py \
   --scenario manifests/scenario.yaml  
 ```
 
-- Run the chain (scenario)
+Run the chain (scenario)
 ```
 make -C export/scenarios/demo-chain
 ./export/scenarios/demo-chain/scenario
