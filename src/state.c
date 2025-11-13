@@ -3,16 +3,16 @@
 
 cb_state_t CB;
 
-void cb_reset(void){
-  memset(&CB, 0, sizeof(CB));
-  CB._next_rid = 1; /* start region ids at 1 */
-}
-
 static cb_region_t* find_region(uint32_t rid){
   for(uint32_t i=0;i<CB.region_count;i++){
     if (CB.regions[i].id == rid) return &CB.regions[i];
   }
   return NULL;
+}
+
+void cb_reset(void){
+  memset(&CB, 0, sizeof(CB));
+  CB._next_rid = 1; /* start region ids at 1 */
 }
 
 uint32_t cb_region_new(cb_segment_t seg, uint32_t size, int alive){

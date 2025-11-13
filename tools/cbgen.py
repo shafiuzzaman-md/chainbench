@@ -201,6 +201,21 @@ def gen_state_copy():
   shutil.copy2(SRC / "state.h", dst_src / "state.h")
   shutil.copy2(SRC / "state.c", dst_src / "state.c")
 
+def copy_runtime(EXPORT: Path, ROOT: Path):
+    """Copy ChainBench runtime into export/ so item Makefiles can reference ../../src and ../../include."""
+    dst_src = EXPORT / "src"
+    dst_inc = EXPORT / "include"
+    dst_src.mkdir(parents=True, exist_ok=True)
+    dst_inc.mkdir(parents=True, exist_ok=True)
+
+    # runtime .c/.h
+    for f in ["state.c", "state.h", "cb_io.c"]:
+        shutil.copy2((ROOT / "src" / f), dst_src / f)
+
+    # project headers used by items
+    for h in ["cb_io.h", "cb_interpose.h"]:
+        shutil.copy2((ROOT / "include" / h), dst_inc / h)
+
 def gen_scenario(items_dir: Path, scen_yaml: Path, scen_root: Path):
   spec = yaml.safe_load(scen_yaml.read_text())
   name = spec.get("name","scenario")
@@ -244,7 +259,8 @@ def main():
   ap.add_argument("--selected", required=True, help="manifests/selected.yaml")
   ap.add_argument("--scenario", default=None, help="manifests/scenario.yaml (optional)")
   args = ap.parse_args()
-
+  
+  copy_runtime(EXPO, ROOT)
   jroot = Path(args.juliet_root).resolve()
   selected = yaml.safe_load(Path(args.selected).read_text())
   items = selected.get("items", [])
