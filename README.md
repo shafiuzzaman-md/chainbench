@@ -12,16 +12,34 @@ Shared state:
 - Effects: `READ | WRITE | EXEC | CALL | TRIGGER`
 - Addesss: `fixed | arbitrary | expandable`
 
+**Generated vulnerabilities**
+export/items/
+Program under analysis = the entire single-item bundle:
+
+main_single.c (entry → calls chainbench_run_<stem}_bad)
+
+adapter.c (seeds input/payload, records the effect, then calls Juliet)
+
+source.c (the Juliet testcase with <stem>_bad() / <stem>_good())
+
+../../src/state.c (shared-state runtime)
+Control flow:
+```
+main_single.c → chainbench_run_<stem>_bad()  (adapter.c)
+               → <stem>_bad()                (source.c, Juliet)
+
+```
 
 
-## How to use
+## How to generate vulerable files
 Setup
 ```
+sudo apt install python3.12-venv
 python3 -m venv .venv && source .venv/bin/activate
 pip install pyyaml
 ```
 
-Prepare Juliet
+Juliet checkout
 ```
 git clone --depth 1 https://github.com/arichardson/juliet-test-suite-c.git external/juliet-test-suite-c
 
@@ -33,6 +51,9 @@ python3 tools/cbgen.py \
   --juliet-root external/juliet-test-suite-c \
   --selected manifests/selected.yaml
 ```
+
+
+## Test the vulnerbaility and chain
 
 List available vulnerabilities
 ```
@@ -62,33 +83,3 @@ make -C export/scenarios/demo-chain
 ```
 
 
-```
-chainbench/
-├── external/
-│   └── juliet-test-suite-c/              # your Juliet checkout
-├── manifests/
-│   ├── selected.yaml                     # which Juliet files to adapt
-│   └── scenario.yaml                     # optional chain definition
-├── export/
-│   ├── include/                          # Juliet testcasesupport headers
-│   ├── src/                              # shared state runtime (state.c/h)
-│   ├── items/                            # one folder per selected testcase
-│   │   └── <STEM>/
-│   │       ├── source.c                  # copied Juliet file
-│   │       ├── adapter.c                 # generated adapter (shared-state glue)
-│   │       ├── main_single.c             # single-binary entry
-│   │       ├── Makefile                  # builds ./app
-│   │       └── meta.yaml                 # effect/segment metadata
-│   ├── scenarios/
-│   │   └── <NAME>/
-│   │       ├── main.c                    # calls chainbench_run_<stem>_bad()
-│   │       ├── Makefile                  # builds ./scenario
-│   │       └── single/                   # convenience copies of item bundles
-│   │           └── <STEM>/...
-│   └── index.json
-├── src/                                  # source of the shared state runtime
-│   ├── state.h
-│   └── state.c
-└── tools/
-    └── cbgen.py                          # generator (this pipeline)
-```

@@ -1,0 +1,24 @@
+# venv & local deps
+.venv/
+__pycache__/
+*.pyc
+
+# external sources 
+external/juliet-test-suite-c/
+
+# build artifacts 
+export/**/app
+export/**/scenario
+export/**/.deps/
+export/**/.objs/
+export/**/build/
+export/**/*.o
+export/**/*.obj
+export/**/*.exe
+export/**/*.dll
+export/**/*.so
+export/**/*.dylib
+
+# misc editor/OS
+.DS_Store
+*.swp

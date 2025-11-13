@@ -1,0 +1,11 @@
+items:
+  - path: testcases/CWE121_Stack_Based_Buffer_Overflow/s01/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01.c
+    effect: WRITE
+    segment: STACK
+    stdin: payload
+    good: false
+
+  - path: testcases/CWE126_Buffer_Overread/s02/CWE126_Buffer_Overread__malloc_char_memcpy_01.c
+    effect: READ
+    segment: DATA
+    stdin: payload
