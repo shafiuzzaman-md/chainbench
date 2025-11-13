@@ -26,7 +26,6 @@ export/items/<STEM>/
 Typical call flow:
 ```
 main_single.c  ->  chainbench_run_<stem>_bad()   (adapter.c) ->  <stem>_bad() (source.c, Juliet)
-
 ```
 ## How to generate 
 Setup
