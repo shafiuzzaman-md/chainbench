@@ -12,8 +12,8 @@ Shared state:
 - Effects: `READ | WRITE | EXEC | CALL | TRIGGER`
 - Addesss: `fixed | arbitrary | expandable`
 
-**Generated outputs:**
-Each selected Juliet testcase becomes a self-contained item bundle.
+**Generated outputs**
+Each selected Juliet testcase becomes a self-contained item bundle:
 ```
 export/items/<STEM>/
 ├── source.c         # Juliet testcase (<stem>_bad / <stem>_good)
@@ -40,9 +40,14 @@ git clone --depth 1 https://github.com/arichardson/juliet-test-suite-c.git exter
 
 Generate vulnerable files (apply adapters)
 ```
+python3 tools/infer_manifest.py \
+  --juliet-root external/juliet-test-suite-c \
+  --in manifests/selected.yaml \
+  --out manifests/selected_resolved.yaml
+
 python3 tools/cbgen.py \
   --juliet-root external/juliet-test-suite-c \
-  --selected manifests/selected.yaml
+  --selected manifests/selected_resolved.yaml
 ```
 
 

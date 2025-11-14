@@ -1,0 +1,10 @@
+stem: CWE127_Buffer_Underread__char_declare_memmove_01
+cwe: 127
+segment: STACK
+effect: WRITE
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE127_Buffer_Underread__char_declare_memmove_01_bad
+  good: null

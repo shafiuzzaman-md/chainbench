@@ -1,0 +1,10 @@
+stem: CWE124_Buffer_Underwrite__malloc_char_memmove_01
+cwe: 124
+segment: HEAP
+effect: WRITE
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE124_Buffer_Underwrite__malloc_char_memmove_01_bad
+  good: null

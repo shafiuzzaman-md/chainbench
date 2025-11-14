@@ -1,0 +1,10 @@
+stem: CWE121_Stack_Based_Buffer_Overflow__CWE129_fscanf_01
+cwe: 121
+segment: DATA
+effect: WRITE
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE121_Stack_Based_Buffer_Overflow__CWE129_fscanf_01_bad
+  good: null
