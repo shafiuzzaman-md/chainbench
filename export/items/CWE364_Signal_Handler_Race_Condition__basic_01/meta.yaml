@@ -1,0 +1,10 @@
+stem: CWE364_Signal_Handler_Race_Condition__basic_01
+cwe: 364
+segment: HEAP
+effect: READ
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE364_Signal_Handler_Race_Condition__basic_01_bad
+  good: null

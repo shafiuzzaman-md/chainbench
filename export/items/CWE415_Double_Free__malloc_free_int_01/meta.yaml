@@ -1,0 +1,10 @@
+stem: CWE415_Double_Free__malloc_free_int_01
+cwe: 415
+segment: HEAP
+effect: READ
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE415_Double_Free__malloc_free_int_01_bad
+  good: null

@@ -1,0 +1,10 @@
+stem: CWE114_Process_Control__w32_char_connect_socket_01
+cwe: 114
+segment: DATA
+effect: WRITE
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE114_Process_Control__w32_char_connect_socket_01_bad
+  good: null

@@ -1,0 +1,10 @@
+stem: CWE481_Assigning_Instead_of_Comparing__basic_01
+cwe: 481
+segment: DATA
+effect: READ
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE481_Assigning_Instead_of_Comparing__basic_01_bad
+  good: null

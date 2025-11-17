@@ -1,0 +1,10 @@
+stem: CWE478_Missing_Default_Case_in_Switch__basic_01
+cwe: 478
+segment: DATA
+effect: READ
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE478_Missing_Default_Case_in_Switch__basic_01_bad
+  good: null

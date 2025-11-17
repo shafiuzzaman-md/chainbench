@@ -1,0 +1,10 @@
+stem: CWE457_Use_of_Uninitialized_Variable__int_01
+cwe: 457
+segment: DATA
+effect: READ
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE457_Use_of_Uninitialized_Variable__int_01_bad
+  good: null

@@ -1,5 +1,25 @@
 [
   {
+    "stem": "CWE78_OS_Command_Injection__char_connect_socket_execl_01",
+    "path": "items/CWE78_OS_Command_Injection__char_connect_socket_execl_01"
+  },
+  {
+    "stem": "CWE78_OS_Command_Injection__char_console_popen_01",
+    "path": "items/CWE78_OS_Command_Injection__char_console_popen_01"
+  },
+  {
+    "stem": "CWE78_OS_Command_Injection__char_environment_w32_execv_01",
+    "path": "items/CWE78_OS_Command_Injection__char_environment_w32_execv_01"
+  },
+  {
+    "stem": "CWE114_Process_Control__w32_char_connect_socket_01",
+    "path": "items/CWE114_Process_Control__w32_char_connect_socket_01"
+  },
+  {
+    "stem": "CWE114_Process_Control__w32_char_console_02",
+    "path": "items/CWE114_Process_Control__w32_char_console_02"
+  },
+  {
     "stem": "CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01",
     "path": "items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01"
   },
@@ -74,5 +94,165 @@
   {
     "stem": "CWE197_Numeric_Truncation_Error__int_fscanf_to_short_01",
     "path": "items/CWE197_Numeric_Truncation_Error__int_fscanf_to_short_01"
+  },
+  {
+    "stem": "CWE226_Sensitive_Information_Uncleared_Before_Release__w32_char_alloca_01",
+    "path": "items/CWE226_Sensitive_Information_Uncleared_Before_Release__w32_char_alloca_01"
+  },
+  {
+    "stem": "CWE226_Sensitive_Information_Uncleared_Before_Release__w32_char_declare_01",
+    "path": "items/CWE226_Sensitive_Information_Uncleared_Before_Release__w32_char_declare_01"
+  },
+  {
+    "stem": "CWE226_Sensitive_Information_Uncleared_Before_Release__w32_wchar_t_alloca_01",
+    "path": "items/CWE226_Sensitive_Information_Uncleared_Before_Release__w32_wchar_t_alloca_01"
+  },
+  {
+    "stem": "CWE535_Info_Exposure_Shell_Error__w32_char_01",
+    "path": "items/CWE535_Info_Exposure_Shell_Error__w32_char_01"
+  },
+  {
+    "stem": "CWE535_Info_Exposure_Shell_Error__w32_wchar_t_01",
+    "path": "items/CWE535_Info_Exposure_Shell_Error__w32_wchar_t_01"
+  },
+  {
+    "stem": "CWE562_Return_of_Stack_Variable_Address__return_buf_01",
+    "path": "items/CWE562_Return_of_Stack_Variable_Address__return_buf_01"
+  },
+  {
+    "stem": "CWE587_Assignment_of_Fixed_Address_to_Pointer__basic_01",
+    "path": "items/CWE587_Assignment_of_Fixed_Address_to_Pointer__basic_01"
+  },
+  {
+    "stem": "CWE78_OS_Command_Injection__char_listen_socket_system_01",
+    "path": "items/CWE78_OS_Command_Injection__char_listen_socket_system_01"
+  },
+  {
+    "stem": "CWE114_Process_Control__w32_char_environment_01",
+    "path": "items/CWE114_Process_Control__w32_char_environment_01"
+  },
+  {
+    "stem": "CWE272_Least_Privilege_Violation__w32_char_CreateProcessAsUser_01",
+    "path": "items/CWE272_Least_Privilege_Violation__w32_char_CreateProcessAsUser_01"
+  },
+  {
+    "stem": "CWE273_Improper_Check_for_Dropped_Privileges__w32_ImpersonateNamedPipeClient_01",
+    "path": "items/CWE273_Improper_Check_for_Dropped_Privileges__w32_ImpersonateNamedPipeClient_01"
+  },
+  {
+    "stem": "CWE321_Hard_Coded_Cryptographic_Key__w32_char_01",
+    "path": "items/CWE321_Hard_Coded_Cryptographic_Key__w32_char_01"
+  },
+  {
+    "stem": "CWE321_Hard_Coded_Cryptographic_Key__w32_wchar_t_01",
+    "path": "items/CWE321_Hard_Coded_Cryptographic_Key__w32_wchar_t_01"
+  },
+  {
+    "stem": "CWE364_Signal_Handler_Race_Condition__basic_01",
+    "path": "items/CWE364_Signal_Handler_Race_Condition__basic_01"
+  },
+  {
+    "stem": "CWE367_TOC_TOU__access_01",
+    "path": "items/CWE367_TOC_TOU__access_01"
+  },
+  {
+    "stem": "CWE369_Divide_by_Zero__int_rand_divide_01",
+    "path": "items/CWE369_Divide_by_Zero__int_rand_divide_01"
+  },
+  {
+    "stem": "CWE401_Memory_Leak__char_calloc_01",
+    "path": "items/CWE401_Memory_Leak__char_calloc_01"
+  },
+  {
+    "stem": "CWE401_Memory_Leak__char_malloc_01",
+    "path": "items/CWE401_Memory_Leak__char_malloc_01"
+  },
+  {
+    "stem": "CWE401_Memory_Leak__char_realloc_01",
+    "path": "items/CWE401_Memory_Leak__char_realloc_01"
+  },
+  {
+    "stem": "CWE401_Memory_Leak__int64_t_calloc_01",
+    "path": "items/CWE401_Memory_Leak__int64_t_calloc_01"
+  },
+  {
+    "stem": "CWE401_Memory_Leak__strdup_wchar_t_01",
+    "path": "items/CWE401_Memory_Leak__strdup_wchar_t_01"
+  },
+  {
+    "stem": "CWE401_Memory_Leak__struct_twoIntsStruct_calloc_01",
+    "path": "items/CWE401_Memory_Leak__struct_twoIntsStruct_calloc_01"
+  },
+  {
+    "stem": "CWE415_Double_Free__malloc_free_char_01",
+    "path": "items/CWE415_Double_Free__malloc_free_char_01"
+  },
+  {
+    "stem": "CWE415_Double_Free__malloc_free_int64_t_01",
+    "path": "items/CWE415_Double_Free__malloc_free_int64_t_01"
+  },
+  {
+    "stem": "CWE415_Double_Free__malloc_free_int_01",
+    "path": "items/CWE415_Double_Free__malloc_free_int_01"
+  },
+  {
+    "stem": "CWE415_Double_Free__malloc_free_long_01",
+    "path": "items/CWE415_Double_Free__malloc_free_long_01"
+  },
+  {
+    "stem": "CWE415_Double_Free__malloc_free_struct_01",
+    "path": "items/CWE415_Double_Free__malloc_free_struct_01"
+  },
+  {
+    "stem": "CWE415_Double_Free__malloc_free_wchar_t_01",
+    "path": "items/CWE415_Double_Free__malloc_free_wchar_t_01"
+  },
+  {
+    "stem": "CWE416_Use_After_Free__malloc_free_char_01",
+    "path": "items/CWE416_Use_After_Free__malloc_free_char_01"
+  },
+  {
+    "stem": "CWE416_Use_After_Free__malloc_free_int_01",
+    "path": "items/CWE416_Use_After_Free__malloc_free_int_01"
+  },
+  {
+    "stem": "CWE416_Use_After_Free__malloc_free_long_01",
+    "path": "items/CWE416_Use_After_Free__malloc_free_long_01"
+  },
+  {
+    "stem": "CWE416_Use_After_Free__malloc_free_struct_10",
+    "path": "items/CWE416_Use_After_Free__malloc_free_struct_10"
+  },
+  {
+    "stem": "CWE416_Use_After_Free__return_freed_ptr_01",
+    "path": "items/CWE416_Use_After_Free__return_freed_ptr_01"
+  },
+  {
+    "stem": "CWE457_Use_of_Uninitialized_Variable__int_01",
+    "path": "items/CWE457_Use_of_Uninitialized_Variable__int_01"
+  },
+  {
+    "stem": "CWE467_Use_of_sizeof_on_Pointer_Type__char_01",
+    "path": "items/CWE467_Use_of_sizeof_on_Pointer_Type__char_01"
+  },
+  {
+    "stem": "CWE476_NULL_Pointer_Dereference__struct_01",
+    "path": "items/CWE476_NULL_Pointer_Dereference__struct_01"
+  },
+  {
+    "stem": "CWE478_Missing_Default_Case_in_Switch__basic_01",
+    "path": "items/CWE478_Missing_Default_Case_in_Switch__basic_01"
+  },
+  {
+    "stem": "CWE481_Assigning_Instead_of_Comparing__basic_01",
+    "path": "items/CWE481_Assigning_Instead_of_Comparing__basic_01"
+  },
+  {
+    "stem": "CWE484_Omitted_Break_Statement_in_Switch__basic_01",
+    "path": "items/CWE484_Omitted_Break_Statement_in_Switch__basic_01"
+  },
+  {
+    "stem": "CWE526_Info_Exposure_Environment_Variables__basic_01",
+    "path": "items/CWE526_Info_Exposure_Environment_Variables__basic_01"
   }
 ]

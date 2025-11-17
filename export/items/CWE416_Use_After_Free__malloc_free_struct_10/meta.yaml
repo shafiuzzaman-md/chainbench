@@ -1,0 +1,10 @@
+stem: CWE416_Use_After_Free__malloc_free_struct_10
+cwe: 416
+segment: HEAP
+effect: READ
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE416_Use_After_Free__malloc_free_struct_10_bad
+  good: null

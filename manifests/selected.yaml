@@ -2,6 +2,13 @@
 # stems are resolved under --juliet-root/testcases/**/<stem>.c
 
 items:
+  - stem: CWE78_OS_Command_Injection__char_connect_socket_execl_01
+  - stem: CWE78_OS_Command_Injection__char_console_popen_01
+  - stem: CWE78_OS_Command_Injection__char_environment_w32_execv_01
+
+  - stem: CWE114_Process_Control__w32_char_connect_socket_01
+  - stem: CWE114_Process_Control__w32_char_console_02
+
   - stem: CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01
   - stem: CWE121_Stack_Based_Buffer_Overflow__CWE129_fscanf_01
   - stem: CWE121_Stack_Based_Buffer_Overflow__CWE805_char_declare_memcpy_01
@@ -10,18 +17,106 @@ items:
 
   - stem: CWE122_Heap_Based_Buffer_Overflow__c_CWE805_char_memcpy_01
   - stem: CWE122_Heap_Based_Buffer_Overflow__c_CWE805_wchar_t_memmove_01
+
   - stem: CWE124_Buffer_Underwrite__char_declare_memmove_01
   - stem: CWE124_Buffer_Underwrite__malloc_char_memmove_01
 
   - stem: CWE126_Buffer_Overread__malloc_char_memcpy_01
   - stem: CWE126_Buffer_Overread__char_declare_memcpy_01
-  - stem: CWE127_Buffer_Underread__char_declare_memmove_01
 
+  - stem: CWE127_Buffer_Underread__char_declare_memmove_01
   - stem: CWE127_Buffer_Underread__malloc_char_memcpy_01
+
   - stem: CWE190_Integer_Overflow__int_max_add_01
   - stem: CWE190_Integer_Overflow__int_fscanf_multiply_01
+
   - stem: CWE191_Integer_Underflow__int_fscanf_sub_01
   - stem: CWE191_Integer_Underflow__int_min_sub_01
+
   - stem: CWE194_Unexpected_Sign_Extension__negative_memcpy_01
+
   - stem: CWE197_Numeric_Truncation_Error__int_fscanf_to_short_01
+
+  - stem: CWE226_Sensitive_Information_Uncleared_Before_Release__w32_char_alloca_01
+  - stem: CWE226_Sensitive_Information_Uncleared_Before_Release__w32_char_declare_01
+  - stem: CWE226_Sensitive_Information_Uncleared_Before_Release__w32_wchar_t_alloca_01
+
+  - stem: CWE535_Info_Exposure_Shell_Error__w32_char_01
+  - stem: CWE535_Info_Exposure_Shell_Error__w32_wchar_t_01
+
+
+  - stem: CWE562_Return_of_Stack_Variable_Address__return_buf_01
+
+  - stem: CWE587_Assignment_of_Fixed_Address_to_Pointer__basic_01
+
+    # OS Command Injection
+  - stem: CWE78_OS_Command_Injection__char_listen_socket_system_01
+
+  # Process Control
+  - stem: CWE114_Process_Control__w32_char_environment_01
+
+  # Least Privilege Violation
+  - stem: CWE272_Least_Privilege_Violation__w32_char_CreateProcessAsUser_01
+
+  # Improper Check for Dropped Privileges
+  - stem: CWE273_Improper_Check_for_Dropped_Privileges__w32_ImpersonateNamedPipeClient_01
+
+  # Use of Hard-coded Cryptographic Key
+  - stem: CWE321_Hard_Coded_Cryptographic_Key__w32_char_01
+  - stem: CWE321_Hard_Coded_Cryptographic_Key__w32_wchar_t_01
+
+  # Signal Handler Race Condition
+  - stem: CWE364_Signal_Handler_Race_Condition__basic_01
+
+  # Time-of-check Time-of-use (TOCTOU)
+  - stem: CWE367_TOC_TOU__access_01
+
+  # Divide By Zero
+  - stem: CWE369_Divide_by_Zero__int_rand_divide_01
+
+  # Memory Leak
+  - stem: CWE401_Memory_Leak__char_calloc_01
+  - stem: CWE401_Memory_Leak__char_malloc_01
+  - stem: CWE401_Memory_Leak__char_realloc_01
+  - stem: CWE401_Memory_Leak__int64_t_calloc_01
+  - stem: CWE401_Memory_Leak__strdup_wchar_t_01
+  - stem: CWE401_Memory_Leak__struct_twoIntsStruct_calloc_01
+
+  # Double Free
+  - stem: CWE415_Double_Free__malloc_free_char_01
+  - stem: CWE415_Double_Free__malloc_free_int64_t_01
+  - stem: CWE415_Double_Free__malloc_free_int_01
+  - stem: CWE415_Double_Free__malloc_free_long_01
+  - stem: CWE415_Double_Free__malloc_free_struct_01
+  - stem: CWE415_Double_Free__malloc_free_wchar_t_01
+
+  # Use After Free
+  - stem: CWE416_Use_After_Free__malloc_free_char_01
+  - stem: CWE416_Use_After_Free__malloc_free_int_01
+  - stem: CWE416_Use_After_Free__malloc_free_long_01
+  - stem: CWE416_Use_After_Free__malloc_free_struct_10
+  - stem: CWE416_Use_After_Free__return_freed_ptr_01
+
+  # Use of Uninitialized Variable
+  - stem: CWE457_Use_of_Uninitialized_Variable__int_01
+
+  # Use of sizeof() on a Pointer Type
+  - stem: CWE467_Use_of_sizeof_on_Pointer_Type__char_01
+
+  # NULL Pointer Dereference
+  - stem: CWE476_NULL_Pointer_Dereference__struct_01
+
+  # Missing Default Case in Switch
+  - stem: CWE478_Missing_Default_Case_in_Switch__basic_01
+
+  # Assigning instead of Comparing
+  - stem: CWE481_Assigning_Instead_of_Comparing__basic_01
+
+  # Omitted Break Statement in Switch
+  - stem: CWE484_Omitted_Break_Statement_in_Switch__basic_01
+
+  # Information Exposure Through Environmental Variables
+  - stem: CWE526_Info_Exposure_Environment_Variables__basic_01
+
+  
 

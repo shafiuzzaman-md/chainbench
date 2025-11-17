@@ -1,0 +1,10 @@
+stem: CWE273_Improper_Check_for_Dropped_Privileges__w32_ImpersonateNamedPipeClient_01
+cwe: 273
+segment: DATA
+effect: READ
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE273_Improper_Check_for_Dropped_Privileges__w32_ImpersonateNamedPipeClient_01_bad
+  good: null

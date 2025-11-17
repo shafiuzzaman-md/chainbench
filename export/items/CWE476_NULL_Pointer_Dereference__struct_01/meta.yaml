@@ -1,0 +1,10 @@
+stem: CWE476_NULL_Pointer_Dereference__struct_01
+cwe: 476
+segment: DATA
+effect: READ
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE476_NULL_Pointer_Dereference__struct_01_bad
+  good: null

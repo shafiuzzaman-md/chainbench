@@ -1,0 +1,10 @@
+stem: CWE226_Sensitive_Information_Uncleared_Before_Release__w32_wchar_t_alloca_01
+cwe: 226
+segment: DATA
+effect: WRITE
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE226_Sensitive_Information_Uncleared_Before_Release__w32_wchar_t_alloca_01_bad
+  good: null

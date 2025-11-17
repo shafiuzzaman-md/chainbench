@@ -1,0 +1,10 @@
+stem: CWE369_Divide_by_Zero__int_rand_divide_01
+cwe: 369
+segment: DATA
+effect: TRIGGER
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE369_Divide_by_Zero__int_rand_divide_01_bad
+  good: null

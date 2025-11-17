@@ -1,0 +1,10 @@
+stem: CWE78_OS_Command_Injection__char_listen_socket_system_01
+cwe: 78
+segment: DATA
+effect: EXEC
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE78_OS_Command_Injection__char_listen_socket_system_01_bad
+  good: null

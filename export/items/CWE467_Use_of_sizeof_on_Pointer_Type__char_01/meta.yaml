@@ -1,0 +1,10 @@
+stem: CWE467_Use_of_sizeof_on_Pointer_Type__char_01
+cwe: 467
+segment: HEAP
+effect: READ
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE467_Use_of_sizeof_on_Pointer_Type__char_01_bad
+  good: null

@@ -1,0 +1,10 @@
+stem: CWE526_Info_Exposure_Environment_Variables__basic_01
+cwe: 526
+segment: DATA
+effect: READ
+io: ENV
+env_key: ADD
+file_name: null
+entrypoints:
+  bad: CWE526_Info_Exposure_Environment_Variables__basic_01_bad
+  good: null

@@ -1,0 +1,10 @@
+stem: CWE535_Info_Exposure_Shell_Error__w32_char_01
+cwe: 535
+segment: DATA
+effect: WRITE
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE535_Info_Exposure_Shell_Error__w32_char_01_bad
+  good: null

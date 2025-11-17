@@ -1,0 +1,10 @@
+stem: CWE401_Memory_Leak__char_calloc_01
+cwe: 401
+segment: HEAP
+effect: WRITE
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE401_Memory_Leak__char_calloc_01_bad
+  good: null

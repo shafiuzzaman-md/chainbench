@@ -1,0 +1,10 @@
+stem: CWE272_Least_Privilege_Violation__w32_char_CreateProcessAsUser_01
+cwe: 272
+segment: DATA
+effect: READ
+io: STDIN
+env_key: null
+file_name: null
+entrypoints:
+  bad: CWE272_Least_Privilege_Violation__w32_char_CreateProcessAsUser_01_bad
+  good: null
