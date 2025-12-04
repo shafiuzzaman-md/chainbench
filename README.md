@@ -1,20 +1,32 @@
 # ChainBench
 
 Real exploits often require chains (e.g., overflow -> pointer overwrite -> hijack), while most benchmarks test single CWEs. ChainBench adapts Juliet C testcases so independent vulnerable units can be sequenced and composed. 
+
 Source testcases are from juliet-test-suite-c: https://github.com/arichardson/juliet-test-suite-c
 
-**What we add:**
-- Attacker input modeling: one clear channel per item `STDIN / ENV / FILE`. 
+## What ChainBench adds
+- **Attacker input modeling**  
+  One clear channel per item: `STDIN` / `ENV` / `FILE`.
 
-- Effect model: one abstract region (segment = `HEAP|STACK|DATA|CODE|PROTECTED`) and one effect (`READ|WRITE|EXEC|CALL|TRIGGER`) for each item.
+- **Effect & region model**  
+  Each item records exactly one abstract memory region and one effect:
+  - Segment: `HEAP | STACK | DATA | CODE | PROTECTED`  
+  - Effect:  `READ | WRITE | EXEC | CALL | TRIGGER`
 
-- Entrypoint: `main_single.c` that loads 1) payload → 2) exposes it → 3) records region/effect → 4) calls <stem>_bad().
+- **Deterministic memory model**  
+  You can pin each item’s region to a **fixed base address and size** so that chains can share a single global “map” of abstract memory and reason about cross-item interactions.
 
-- Evaluation support:
-    - Scenario chaining: a main that invokes multiple adapters to emulate exploit chains.
-    - Ground-truth manifest: `selected_resolved.yam`l (from `infer_manifest.py`) encodes the resolved source path and configuration (segment/effect/io/entrypoints).
+- **Clean entrypoint**  
+  Generated `main_single.c` does:
+  1) load `payload.bin` → 2) expose via requested IO channel → 3) create/log region+effect → 4) call `<stem>_bad()`.
 
-**Generated outputs**
+- **Evaluation support**
+  - Scenario chaining (`export/scenarios/<name>/scenario`) invoking multiple adapters.
+  - Ground-truth `meta.yaml` for each item (segment/effect/io/entrypoints/memory settings).
+  - Uniform logs: `[CB_LOG] ...` lines show region & effect decisions per run.
+
+
+## Directory layout (generated)
 Each selected Juliet testcase becomes a self-contained item bundle:
 ```
 export/items/<STEM>/
@@ -27,10 +39,40 @@ export/items/<STEM>/
 
 Typical call flow:
 ```
-main_single.c
-  -> chainbench_run_<stem>_bad()  [adapter.c]
-       -> <stem>_bad()            [source.c from Juliet]
+main_single.c -> cb_region_addr(...); cb_effect_push(...); # record model + log
+-> <stem>_bad(); # source.c from Juliet
 ```
+
+---
+
+## Memory model
+
+To support **reproducible chaining**, ChainBench introduces a minimal, explicit memory model:
+
+- **Region API:**  
+  The generated code calls:
+
+  ```c
+  uint32_t cb_region_addr(enum cb_segment seg,
+                          uint64_t        base,     // region base address (logical)
+                          uint32_t        size,     // bytes
+                          uint32_t        growth,   // 1 for now
+                          enum cb_addr_class cls);  // FIXED | ARBITRARY | EXPANDABLE
+
+### Address class:
+- FIXED: region is placed at the provided base
+- ARBITRARY: runtime chooses a stable but arbitrary base
+- EXPANDABLE: like ARBITRARY but allows growth
+
+### Environment overrides (per run):
+- CB_ADDR_CLASS=FIXED|ARBITRARY|EXPANDABLE
+- CB_FIXED_BASE=0xHEX_OR_DEC (used if class = FIXED)
+- CB_REGION_SIZE=DEC_BYTES
+These override whatever defaults were baked into meta.yaml/main_single.c.
+
+### Logging:
+[CB_LOG] region rid=<id> seg=<SEG> base=0x<addr> size=<bytes> class=<CLASS> action=<ACT> off=0 len=0
+
 ## How to generate 
 Setup
 ```

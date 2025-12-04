@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>  
+#include <unistd.h>
 #include <errno.h>
 #include "state.h"
 
@@ -32,7 +32,7 @@ static long read_payload_file(unsigned char* buf, size_t cap){
   if (!f) return -1;
   size_t n = fread(buf,1,cap ? cap-1 : 0,f);
   fclose(f);
-  if (cap) buf[n] = '\0'; /* C-string friendly for ENV/FILE users */
+  if (cap) buf[n] = '\\0'; /* C-string friendly for ENV/FILE users */
   return (long)n;
 }
 
@@ -56,8 +56,8 @@ static void expose_stdin(void){
 
 /* Expose CB.plane -> ENV["ADD"] */
 static void expose_env(void){
-  if (CB.plane_len == 0) { CB.plane[0] = '\0'; CB.plane_len = 1; }
-  else CB.plane[CB.plane_len-1] = '\0';
+  if (CB.plane_len == 0) { CB.plane[0] = '\\0'; CB.plane_len = 1; }
+  else CB.plane[CB.plane_len-1] = '\\0';
   setenv("ADD", (const char*)CB.plane, 1);
 }
 
@@ -88,7 +88,7 @@ int main(void){
 #if 0
   if (!have_payload) {
     /* ENV mode: missing payload.bin is allowed; ENV becomes empty string */
-    CB.plane[0] = '\0'; CB.plane_len = 1;
+    CB.plane[0] = '\\0'; CB.plane_len = 1;
   }
   expose_env();
 #endif

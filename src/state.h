@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CB_STATE_H
+#define CB_STATE_H
 #include <stdint.h>
 #include <stddef.h>
 
@@ -6,77 +7,69 @@
 extern "C" {
 #endif
 
-/* ======= Abstract memory model (lean) ======= */
+/* segments & actions */
+enum cb_segment { SEG_HEAP, SEG_STACK, SEG_DATA, SEG_CODE, SEG_PROTECTED };
+enum cb_action  { ACT_READ, ACT_WRITE, ACT_EXEC, ACT_CALL, ACT_TRIGGER };
 
-typedef enum {
-  SEG_HEAP = 1, SEG_STACK = 2, SEG_DATA = 3, SEG_CODE = 4, SEG_PROTECTED = 5
-} cb_segment_t;
+/* address class for chaining */
+enum cb_addr_class { ADDR_FIXED, ADDR_ARBITRARY, ADDR_EXPANDABLE };
 
-typedef enum {
-  ACT_READ = 1, ACT_WRITE = 2, ACT_EXEC = 3, ACT_CALL = 4, ACT_TRIGGER = 5
-} cb_action_t;
+struct cb_region {
+  uint32_t id;
+  enum cb_segment seg;
+  uint64_t base;         /* default base for the region */
+  uint32_t size;         /* default size */
+  int      growth;       /* 1=can expand */
+  enum cb_addr_class cls;
+};
 
-/* ---- attacker-input taint records ---- */
-typedef enum { TAINT_STDIN=1, TAINT_ENV=2, TAINT_FILE=3 } cb_taint_src_t;
+struct cb_effect {
+  uint32_t region;
+  uint32_t off;
+  uint32_t len;
+  enum cb_action   act;
 
-typedef struct {
-  void*   p;          /* start address of attacker-filled buffer */
-  size_t  n;          /* length of attacker bytes */
-  uint8_t src;        /* TAINT_STDIN / TAINT_ENV / TAINT_FILE */
-  char    label[16];  /* optional label (e.g., "stdin", env key) */
-} cb_taint_rec_t;
+  /* NEW: snapshot of address config FOR THIS EFFECT */
+  uint64_t         base;     /* 0 => inherit region.base */
+  uint32_t         size;     /* 0 => inherit region.size */
+  enum cb_addr_class cls;    /* inheritable */
+};
 
-/* ---- caps ---- */
-#define CB_TAINT_MAX    16u
-#define CB_MAX_REGIONS  64u
-#define CB_MAX_EFFECTS  128u
-#define CB_PLANE_MAX    4096u
+struct cb_state {
+  unsigned char plane[1<<16];
+  uint32_t plane_len;
 
-/* ---- region/effect ---- */
-typedef struct {
-  uint32_t     id;       /* opaque handle */
-  cb_segment_t seg;      /* memory segment */
-  uint32_t     size;     /* abstract size (0 = unknown/expandable) */
-  uint8_t      alive;    /* lifetime: 1=live, 0=fini */
-} cb_region_t;
+  struct cb_region regions[32];
+  uint32_t region_count;
 
-typedef struct {
-  uint32_t     region_id;  /* which region (by id) */
-  uint32_t     offset;     /* abstract offset (0 if N/A) */
-  uint32_t     size;       /* abstract size (0 if N/A) */
-  cb_action_t  act;        /* READ / WRITE / EXEC / CALL / TRIGGER */
-} cb_effect_t;
+  struct cb_effect effects[64];
+  uint32_t effect_count;
+};
 
-/* ---- global state ---- */
-typedef struct {
-  /* Regions & effects recorded for a single run */
-  cb_region_t  regions[CB_MAX_REGIONS];
-  cb_effect_t  effects[CB_MAX_EFFECTS];
-  uint32_t     region_count;
-  uint32_t     effect_count;
+extern struct cb_state CB;
 
-  /* next region id allocator */
-  uint32_t     _next_rid;
+/* API */
+void cb_reset(void);
 
-  /* raw attacker payload mirror (e.g., payload.bin or piped stdin) */
-  unsigned char plane[CB_PLANE_MAX];
-  uint32_t      plane_len;
+uint32_t cb_region_addr(enum cb_segment seg, uint64_t base,
+                        uint32_t size, int growth,
+                        enum cb_addr_class cls);
 
-  /* taint records for buffers filled by fgets/getenv/fread */
-  cb_taint_rec_t ta[CB_TAINT_MAX];
-  uint32_t       ta_cnt;
+/* Legacy shim */
+static inline uint32_t cb_region(enum cb_segment seg, uint32_t size, int growth){
+  return cb_region_addr(seg, 0, size, growth, ADDR_ARBITRARY);
+}
 
-} cb_state_t;
+/* OLD: push without address override (kept for compatibility) */
+void cb_effect_push(uint32_t region, uint32_t off, uint32_t len, enum cb_action act);
 
-extern cb_state_t CB;
-
-/* ======= API ======= */
-void     cb_reset(void);
-uint32_t cb_region_new(cb_segment_t seg, uint32_t size, int alive);
-void     cb_region_kill(uint32_t rid);
-void     cb_effect_push(uint32_t rid, uint32_t off, uint32_t size, cb_action_t act);
-void     cb_taint_add(void* p, size_t n, uint8_t src, const char* label);
+/* NEW: push WITH address override/snapshot at effect time */
+void cb_effect_push_fixed(uint32_t region, uint32_t off, uint32_t len,
+                          enum cb_action act,
+                          uint64_t base_override, uint32_t size_override,
+                          enum cb_addr_class cls_override);
 
 #ifdef __cplusplus
 }
 #endif
+#endif /* CB_STATE_H */

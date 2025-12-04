@@ -1,7 +1,0 @@
-stem: CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01
-cwe: 121
-segment: STACK
-effect: WRITE
-entrypoints:
-  bad: CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01_bad
-  good: null

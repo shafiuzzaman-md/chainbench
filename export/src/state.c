@@ -15,7 +15,7 @@ void cb_reset(void){
   CB._next_rid = 1; /* start region ids at 1 */
 }
 
-uint32_t cb_region_new(cb_segment_t seg, uint32_t size, int alive){
+uint32_t cb_region(cb_segment_t seg, uint32_t size, int alive){
   if (CB.region_count >= CB_MAX_REGIONS) return 0;
   cb_region_t *r = &CB.regions[CB.region_count++];
   r->id = CB._next_rid++;

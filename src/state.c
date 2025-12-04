@@ -1,49 +1,47 @@
 #include "state.h"
 #include <string.h>
 
-cb_state_t CB;
-
-static cb_region_t* find_region(uint32_t rid){
-  for(uint32_t i=0;i<CB.region_count;i++){
-    if (CB.regions[i].id == rid) return &CB.regions[i];
-  }
-  return NULL;
-}
+struct cb_state CB;
 
 void cb_reset(void){
   memset(&CB, 0, sizeof(CB));
-  CB._next_rid = 1; /* start region ids at 1 */
 }
 
-uint32_t cb_region_new(cb_segment_t seg, uint32_t size, int alive){
-  if (CB.region_count >= CB_MAX_REGIONS) return 0;
-  cb_region_t *r = &CB.regions[CB.region_count++];
-  r->id = CB._next_rid++;
-  r->seg = seg;
-  r->size = size;
-  r->alive = alive ? 1u : 0u;
-  return r->id;
+uint32_t cb_region_addr(enum cb_segment seg, uint64_t base,
+                        uint32_t size, int growth,
+                        enum cb_addr_class cls){
+  uint32_t id = CB.region_count;
+  if (id >= 32) return 31; /* clamp */
+  CB.regions[id].id     = id;
+  CB.regions[id].seg    = seg;
+  CB.regions[id].base   = base;
+  CB.regions[id].size   = size;
+  CB.regions[id].growth = growth;
+  CB.regions[id].cls    = cls;
+  CB.region_count++;
+  return id;
 }
 
-void cb_region_kill(uint32_t rid){
-  cb_region_t *r = find_region(rid);
-  if (r) r->alive = 0;
+void cb_effect_push(uint32_t region, uint32_t off, uint32_t len, enum cb_action act){
+  cb_effect_push_fixed(region, off, len, act, 0, 0, (enum cb_addr_class)-1);
 }
 
-void cb_effect_push(uint32_t rid, uint32_t off, uint32_t size, cb_action_t act){
-  if (CB.effect_count >= CB_MAX_EFFECTS) return;
-  cb_effect_t *e = &CB.effects[CB.effect_count++];
-  e->region_id = rid;
-  e->offset = off;
-  e->size = size;
-  e->act = act;
-}
+void cb_effect_push_fixed(uint32_t region, uint32_t off, uint32_t len,
+                          enum cb_action act,
+                          uint64_t base_override, uint32_t size_override,
+                          enum cb_addr_class cls_override){
+  uint32_t i = CB.effect_count;
+  if (i >= 64) return;
+  CB.effects[i].region = region;
+  CB.effects[i].off    = off;
+  CB.effects[i].len    = len;
+  CB.effects[i].act    = act;
 
-void cb_taint_add(void* p, size_t n, uint8_t src, const char* label){
-  if (!p || !n || CB.ta_cnt >= CB_TAINT_MAX) return;
-  cb_taint_rec_t *r = &CB.ta[CB.ta_cnt++];
-  r->p = p; r->n = n; r->src = src;
-  size_t L = label ? strnlen(label, sizeof(r->label)-1) : 0;
-  if (L) memcpy(r->label, label, L);
-  r->label[L] = '\0';
+  /* snapshot: inherit region defaults then apply overrides */
+  const struct cb_region *R = (region < CB.region_count) ? &CB.regions[region] : NULL;
+  CB.effects[i].base = base_override ? base_override : (R ? R->base : 0);
+  CB.effects[i].size = size_override ? size_override : (R ? R->size : 0);
+  CB.effects[i].cls  = (cls_override != (enum cb_addr_class)-1) ? cls_override
+                                                                : (R ? R->cls : ADDR_ARBITRARY);
+  CB.effect_count++;
 }

@@ -72,7 +72,7 @@ extern cb_state_t CB;
 
 /* ======= API ======= */
 void     cb_reset(void);
-uint32_t cb_region_new(cb_segment_t seg, uint32_t size, int alive);
+uint32_t cb_region(cb_segment_t seg, uint32_t size, int alive);
 void     cb_region_kill(uint32_t rid);
 void     cb_effect_push(uint32_t rid, uint32_t off, uint32_t size, cb_action_t act);
 void     cb_taint_add(void* p, size_t n, uint8_t src, const char* label);
