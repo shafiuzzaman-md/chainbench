@@ -18,7 +18,10 @@ Source testcases are from juliet-test-suite-c: https://github.com/arichardson/ju
 
 - **Clean entrypoint**  
   Generated `main_single.c` does:
-  1) load `payload.bin` → 2) expose via requested IO channel → 3) create/log region+effect → 4) call `<stem>_bad()`.
+  1) load `payload.bin` 
+  2) expose via requested IO channel 
+  3) create/log region+effect
+  4) call `<stem>_bad()`.
 
 - **Evaluation support**
   - Scenario chaining (`export/scenarios/<name>/scenario`) invoking multiple adapters.
