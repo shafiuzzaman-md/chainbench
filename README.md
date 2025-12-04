@@ -141,10 +141,15 @@ make -C export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01
 printf "12\n" > export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01/payload.bin
 
 # pin memory and run (shows [CB_LOG] lines)
-CB_ADDR_CLASS=FIXED CB_FIXED_BASE=0x300000 CB_REGION_SIZE=4096 \
-  ./export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01/app
+( cd export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01 \
+  && CB_ADDR_CLASS=FIXED CB_FIXED_BASE=0x300000 CB_REGION_SIZE=4096 ./app )
 ```
+### Run all vulnerabilities
+```
+chmod +x tools/run_all.py
+python3 tools/run_all.py
 
+```
 ### Chain (scenario)
 ```
 python3 tools/cbgen.py \
