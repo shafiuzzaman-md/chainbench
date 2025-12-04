@@ -60,14 +60,16 @@ Misc (367/369/476/481/484/526/457/467/587/562/364): 0x1000 (4 KiB)
 
 3) assign fixed bases & sizes to everything
 ```
-assign fixed bases & sizes to everything
+python3 tools/assign_memory.py \
+  --in  manifests/selected_resolved.yaml \
+  --out manifests/selected_resolved_mem.yaml
 ```
 This fills each item with:
-
 - addr_class: FIXED
 - fixed_base: chosen from its segment pool (unique slot per item)
 - region_size: from the miniature defaults above unless already set
 - re-run assign_memory.py after you add/remove items so slots stay compact.
+
 ## Directory layout (generated)
 Each selected Juliet testcase becomes a self-contained item bundle:
 ```
