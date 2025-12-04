@@ -74,7 +74,7 @@ To support **reproducible chaining**, ChainBench introduces a minimal, explicit 
 These override whatever defaults were baked into meta.yaml/main_single.c.
 
 ### Logging:
-[CB_LOG] region rid=<id> seg=<SEG> base=0x<addr> size=<bytes> class=<CLASS> action=<ACT> off=0 len=0
+```[CB_LOG] region rid=<id> seg=<SEG> base=0x<addr> size=<bytes> class=<CLASS> action=<ACT> off=0 len=0```
 Use these to chain items by aligning regions (e.g., point an overflow item’s DATA region at the same base used by a follow-on EXEC item).
 
 ### Examples:
