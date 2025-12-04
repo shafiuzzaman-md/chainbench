@@ -14,12 +14,12 @@ Source testcases are from juliet-test-suite-c: https://github.com/arichardson/ju
   - Effect:  `READ | WRITE | EXEC | CALL | TRIGGER`
 
 - **Deterministic memory model**  
-  You can pin each item’s region to a **fixed base address and size** so that chains can share a single global “map” of abstract memory and reason about cross-item interactions.
+  Pin each item’s region to a fixed base and size so chains can share a global logical memory map and reason about cross-item interactions.
 
 - **Clean entrypoint**  
   Generated `main_single.c` does:
   1) load `payload.bin` 
-  2) expose via requested IO channel 
+  2) expose via selected IO channel 
   3) create/log region+effect
   4) call `<stem>_bad()`.
 
@@ -27,6 +27,45 @@ Source testcases are from juliet-test-suite-c: https://github.com/arichardson/ju
   - Scenario chaining (`export/scenarios/<name>/scenario`) invoking multiple adapters.
   - Ground-truth `meta.yaml` for each item (segment/effect/io/entrypoints/memory settings).
   - Uniform logs: `[CB_LOG] ...` lines show region & effect decisions per run.
+
+
+
+## Quick-start deterministic memory model
+We reserve disjoint pools per segment so regions don’t collide. Slot size = 64 KiB.
+
+1) Address pools (logical)
+```
+DATA      base 0x40000000, stride 0x00010000
+HEAP      base 0x50000000, stride 0x00010000
+STACK     base 0x60000000, stride 0x00010000
+CODE      base 0x70000000, stride 0x00010000
+PROTECTED base 0x80000000, stride 0x00010000
+```
+Each item gets a slot within its segment’s pool.
+
+2) Default region sizes (by CWE family)
+
+Defaults to keep runs small and consistent:
+```
+Buffer over/under-flows (121/122/124/126/127): 0x2000 (8 KiB)
+Integer (190/191/194/197):                      0x1000 (4 KiB)
+Leak/Double free/UAF (401/415/416):             0x2000
+Command/Process control (78/114/272/273/321):   0x4000
+Misc (367/369/476/481/484/526/457/467/587/562/364): 0x1000
+```
+All items default to addr_class = FIXED for repeatable runs.
+
+3) One-liner to assign memory to everything:
+```
+python3 tools/assign_memory.py \
+  --in  manifests/selected_resolved.yaml \
+  --out manifests/selected_resolved_mem.yaml
+
+python3 tools/assign_memory.py \
+  --in  manifests/selected_resolved.yaml \
+  --out manifests/selected_resolved_mem.yaml
+
+```
 
 
 ## Directory layout (generated)
