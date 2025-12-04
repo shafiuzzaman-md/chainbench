@@ -72,66 +72,87 @@ These override whatever defaults were baked into meta.yaml/main_single.c.
 
 ### Logging:
 [CB_LOG] region rid=<id> seg=<SEG> base=0x<addr> size=<bytes> class=<CLASS> action=<ACT> off=0 len=0
+Use these to chain items by aligning regions (e.g., point an overflow item’s DATA region at the same base used by a follow-on EXEC item).
+
+### Examples:
+- Pin a single item to a known region:
+```
+make -C export/items/CWE190_Integer_Overflow__int_fscanf_multiply_01
+CB_ADDR_CLASS=FIXED CB_FIXED_BASE=0x100000 CB_REGION_SIZE=4096 \
+  ./export/items/CWE190_Integer_Overflow__int_fscanf_multiply_01/app
+```
+
+- Run with arbitrary base but fixed size:
+```
+CB_ADDR_CLASS=ARBITRARY CB_REGION_SIZE=8192 ./export/items/<STEM>/app
+```
+
+- Scenario with shared fixed base for all items (recommended when testing chains):
+```
+make -C export/scenarios/demo-chain
+CB_ADDR_CLASS=FIXED CB_FIXED_BASE=0x400000 CB_REGION_SIZE=16384 \
+  ./export/scenarios/demo-chain/scenario
+
+```
 
 ## How to generate 
-Setup
+### Setup
 ```
 python3 -m venv .venv && source .venv/bin/activate
 pip install pyyaml
 ```
 
-Get Juliet
+### Get Juliet
 ```
 git clone --depth 1 https://github.com/arichardson/juliet-test-suite-c.git external/juliet-test-suite-c
 ```
 
-Generate vulnerable files (apply adapters)
+### Resolve and generate
 ```
 python3 tools/infer_manifest.py \
   --juliet-root external/juliet-test-suite-c \
-  --in manifests/selected.yaml \
+  --in  manifests/selected.yaml \
   --out manifests/selected_resolved.yaml
 
 python3 tools/cbgen.py \
   --juliet-root external/juliet-test-suite-c \
-  --selected manifests/selected_resolved.yaml
-```
+  --selected   manifests/selected_resolved.yaml
 
+```
+This writes:
+- export/items/<STEM>/ (bundles)
+- export/include and export/src (runtime headers/sources)
+- export/index.json (index of items)
 
 ## How to test
 
 ### Independent vulnerabilities
-
-List available vulnerabilities
 ```
+# list
 ls export/items
-```
 
-Build & run a single item (Example)
-```
+# build one
 make -C export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01
 
-# Example run 1:
-./export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01/app < inputs/num_12.txt
-
-# Example run 2:
+# run with a payload
 printf "12\n" > export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01/payload.bin
-./export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01/app
 
+# pin memory and run (shows [CB_LOG] lines)
+CB_ADDR_CLASS=FIXED CB_FIXED_BASE=0x300000 CB_REGION_SIZE=4096 \
+  ./export/items/CWE121_Stack_Based_Buffer_Overflow__CWE129_fgets_01/app
 ```
-### Chains
-Generate a chain from scenario.yaml:
+
+### Chain (scenario)
 ```
 python3 tools/cbgen.py \
   --juliet-root external/juliet-test-suite-c \
-  --selected manifests/selected.yaml \
-  --scenario manifests/scenario.yaml  
-```
+  --selected manifests/selected_resolved.yaml \
+  --scenario manifests/scenario.yaml
 
-Build & run the chain:
-```
 make -C export/scenarios/demo-chain
-./export/scenarios/demo-chain/scenario
-```
 
+# enforce a shared region across all items in the chain
+CB_ADDR_CLASS=FIXED CB_FIXED_BASE=0x500000 CB_REGION_SIZE=32768 \
+  ./export/scenarios/demo-chain/scenario
+```
 
