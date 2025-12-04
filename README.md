@@ -31,43 +31,43 @@ Source testcases are from juliet-test-suite-c: https://github.com/arichardson/ju
 
 
 ## Quick-start deterministic memory model
-We reserve disjoint pools per segment so regions don’t collide. Slot size = 64 KiB.
+We use small, disjoint address pools so regions don’t collide accidentally. Slot size = 64 KiB (fixed). Each item gets one slot in its segment’s pool.
 
 1) Address pools (logical)
 ```
-DATA      base 0x40000000, stride 0x00010000
-HEAP      base 0x50000000, stride 0x00010000
-STACK     base 0x60000000, stride 0x00010000
-CODE      base 0x70000000, stride 0x00010000
-PROTECTED base 0x80000000, stride 0x00010000
+DATA      base 0x40000000 (slot = 64 KiB)
+HEAP      base 0x50000000 (slot = 64 KiB)
+STACK     base 0x60000000 (slot = 64 KiB)
+CODE      base 0x70000000 (slot = 64 KiB)
+PROTECTED base 0x80000000 (slot = 64 KiB)
+
 ```
 Each item gets a slot within its segment’s pool.
 
-2) Default region sizes (by CWE family)
+2) Miniature default region sizes (kept small, but fixed per family):
 
 Defaults to keep runs small and consistent:
 ```
 Buffer over/under-flows (121/122/124/126/127): 0x2000 (8 KiB)
 Integer (190/191/194/197):                      0x1000 (4 KiB)
-Leak/Double free/UAF (401/415/416):             0x2000
-Command/Process control (78/114/272/273/321):   0x4000
-Misc (367/369/476/481/484/526/457/467/587/562/364): 0x1000
-```
-All items default to addr_class = FIXED for repeatable runs.
-
-3) One-liner to assign memory to everything:
-```
-python3 tools/assign_memory.py \
-  --in  manifests/selected_resolved.yaml \
-  --out manifests/selected_resolved_mem.yaml
-
-python3 tools/assign_memory.py \
-  --in  manifests/selected_resolved.yaml \
-  --out manifests/selected_resolved_mem.yaml
+Leak/Double free/UAF (401/415/416):             0x2000 (8 KiB)
+Command/Process control (78/114/272/273/321):   0x4000 (16 KiB)
+Misc (367/369/476/481/484/526/457/467/587/562/364): 0x1000 (4 KiB)
 
 ```
+- Address class is always FIXED in miniature mode.
+- If two items should alias (e.g., “write-what-where -> hijack”), give them the same base slot intentionally.
 
+3) assign fixed bases & sizes to everything
+```
+assign fixed bases & sizes to everything
+```
+This fills each item with:
 
+- addr_class: FIXED
+- fixed_base: chosen from its segment pool (unique slot per item)
+- region_size: from the miniature defaults above unless already set
+- re-run assign_memory.py after you add/remove items so slots stay compact.
 ## Directory layout (generated)
 Each selected Juliet testcase becomes a self-contained item bundle:
 ```
